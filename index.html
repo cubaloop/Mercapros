@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mercapros Cuba | Contenedores CIF Mariel, Mipymes, TCP y Domicilio</title>
+  <meta name="description" content="Mercapros Cuba: Catálogo oficial de importación de contenedores CIF Mariel (WSSND SKYLINK), compras mayoristas para Mipymes y TCP, y entregas a domicilio calculadas por kilómetro." />
+  <meta name="keywords" content="Mercapros Cuba, WSSND SKYLINK, contenedores Mariel Cuba, Mipymes Cuba, TCP Cuba, compras online Cuba" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mercapros.cu/" />
+
+  <!-- Open Graph / Social SEO -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Mercapros Cuba | Plataforma B2B Contenedores, Mipymes, TCP y Hogar" />
+  <meta property="og:description" content="Catálogo oficial de contenedores CIF Mariel de WSSND SKYLINK, mercado mayorista para Mipymes/TCP y compras a domicilio en Cuba." />
+  <meta property="og:image" content="assets/mercapros-logo.webp" />
+  <link rel="icon" type="image/webp" href="assets/mercapros-logo.webp" />
+
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "name": "Mercapros Cuba",
+    "url": "https://mercapros.cu",
+    "description": "Plataforma de mercadeo B2B y B2C para Cuba: Exportadores de contenedores (WSSND SKYLINK), Mipymes, TCP y entregas a domicilio.",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Cuba"
+    },
+    "currenciesAccepted": "USD, EUR, USDT, CUP"
+  }
+  </script>
+
+  <!-- Tipografías Display & UI (Fraunces + Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Iconografía FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="styles.css?v=3.5" />
+  <style>
+    body {
+      background-color: #F7F5F0;
+      color: #2A2522;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-wrap: break-word;
+    }
+    html.dark body {
+      background-color: #171413;
+      color: #F2EDE0;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    body.low-data-mode .hide-on-lowdata {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#7C1D18] selection:text-white">
+
+  <!-- CABECERA LIMPIA Y DIRECTA (SOLO MENÚ, LOGO, BUSCADOR Y CARRITO) -->
+  <header class="site-header sticky top-0 z-40 backdrop-blur-md bg-[#F7F5F0]/95 dark:bg-[#171413]/95 border-b border-stone-300/70 dark:border-white/10">
+    <div class="header-main max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Botón de Menú + Logo Oficial -->
+      <div class="header-brand flex items-center gap-2.5">
+        <button onclick="document.getElementById('mobile-drawer').classList.remove('hidden')" aria-label="Abrir Menú" class="w-10 h-10 rounded-xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300/80 dark:border-white/10 flex items-center justify-center hover:border-[#7C1D18] transition-colors">
+          <i class="fa-solid fa-bars text-base"></i>
+        </button>
+        <a href="#" onclick="activeVendorFilter='ALL'; selectCategory('all');" class="flex items-center gap-2.5">
+          <img src="assets/mercapros-logo.webp" alt="Mercapros Logo Oficial" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover shadow-sm border border-stone-300 dark:border-white/15" />
+          <div>
+            <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight block leading-none">MERCAPROS</span>
+            <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#7C1D18] dark:text-[#F2AE79] block mt-0.5">Tu Día de Compras • Cuba</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Buscador Principal -->
+      <div class="header-search flex-1 min-w-[210px] max-w-xl relative order-last lg:order-none w-full lg:w-auto">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs opacity-50"></i>
+        <input
+          aria-label="Buscar productos o tiendas"
+          type="search"
+          oninput="handleSearchInput(this.value)"
+          placeholder="Buscar en WSSND SKYLINK, harina, arroz, pollo, aceite..."
+          class="w-full pl-9 pr-4 py-2 rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300/80 dark:border-white/10 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#7C1D18]"
+        />
+      </div>
+
+      <!-- Acción Principal en Cabecera: Solo Carrito (los demás controles viven en el Menú) -->
+      <div class="header-actions flex items-center gap-2">
+        <button onclick="toggleCartDrawer(true)" aria-label="Abrir carrito" class="relative px-3.5 py-2 rounded-xl bg-[#7C1D18] hover:bg-[#5D1713] text-white font-bold text-xs flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="js-cart-count px-1.5 py-0.5 rounded-full bg-black/25 text-white text-[10px] font-extrabold">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Barra Compacta de Ubicación y Nivel de Usuario -->
+    <div class="header-secondary bg-[#FFFFFF]/80 dark:bg-[#211D1B]/80 border-t border-stone-200/70 dark:border-white/5 py-1 px-4">
+      <div class="header-secondary-inner max-w-7xl mx-auto">
+        <!-- Ubicación y Calculadora de Domicilio por Km -->
+        <div class="header-location flex items-center gap-2 bg-[#FFFFFF] dark:bg-[#211D1B] px-3 py-1 rounded-2xl border border-stone-300/80 dark:border-white/10 shadow-sm">
+          <i class="fa-solid fa-location-dot text-[#7C1D18] dark:text-[#F2AE79]"></i>
+          <div class="text-xs">
+            <div class="flex items-center gap-1">
+              <select id="header-province-select" onchange="onProvinceChange(this.value)" aria-label="Provincia" class="bg-transparent font-bold text-xs focus:outline-none cursor-pointer"></select>
+              <span class="opacity-40">/</span>
+              <select id="header-municipality-select" onchange="onMunicipalityChange(this.value)" aria-label="Municipio" class="bg-transparent font-bold text-xs text-[#7C1D18] dark:text-[#F2AE79] focus:outline-none cursor-pointer max-w-[150px] truncate"></select>
+            </div>
+          </div>
+          <button onclick="openDeliveryMapModal()" class="ml-1 px-2.5 py-1 rounded-xl bg-[#7C1D18]/15 hover:bg-[#7C1D18] text-[#7C1D18] dark:text-[#F2AE79] hover:text-white text-xs font-bold transition-all flex items-center gap-1" title="Ver mapa y tarifa por km">
+            <i class="fa-solid fa-map-location-dot"></i>
+            <span class="hidden sm:inline">Mapa $/km</span>
+          </button>
+        </div>
+
+        <nav aria-label="Tipo de comprador" class="customer-views flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <span class="text-[11px] font-bold opacity-60 shrink-0">Vista:</span>
+          <button data-role="ALL_VIEW" onclick="setUserRole('ALL_VIEW')" class="js-role-btn shrink-0">
+            Todo
+          </button>
+          <button data-role="EXPORTADOR_B2B" onclick="setUserRole('EXPORTADOR_B2B')" class="js-role-btn shrink-0">
+            Exportadores (Contenedores)
+          </button>
+          <button data-role="MIPYME" onclick="setUserRole('MIPYME')" class="js-role-btn shrink-0">
+            Mipymes (Mayor y Menor)
+          </button>
+          <button data-role="TCP" onclick="setUserRole('TCP')" class="js-role-btn shrink-0">
+            TCP (Minorista)
+          </button>
+          <button data-role="CLIENTE_B2C" onclick="setUserRole('CLIENTE_B2C')" class="js-role-btn shrink-0">
+            Hogar B2C
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL LIMPIO (SIN HUECOS ENTRE CINTILLOS DE CATEGORÍAS) -->
+  <main id="main-content" class="market-main flex-1 max-w-7xl w-full mx-auto px-4 py-3 space-y-4">
+
+    <!-- BLOQUE UNIFICADO DE CINTILLOS DE NAVEGACIÓN Y FILTROS (COMPACTO Y PROFESIONAL) -->
+    <section class="unified-filters-bar rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-200/90 dark:border-white/10 p-2.5 sm:p-3 shadow-sm space-y-2.5">
+      <!-- Cintillo 1: Departamentos y Categorías -->
+      <div id="categories-scroll-bar" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
+
+      <!-- Cintillo 2: Modalidades y Ordenamiento (Integrado sin espacio muerto) -->
+      <div class="catalog-toolbar flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-stone-200/70 dark:border-white/10">
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+          <button data-mode="ALL" onclick="setSaleModeFilter('ALL')" class="js-salemode-pill px-3 py-1.5 rounded-lg text-xs font-bold bg-[#7C1D18] text-white shadow-sm shrink-0">
+            Todos
+          </button>
+          <button data-mode="CONTAINER_B2B" onclick="setSaleModeFilter('CONTAINER_B2B')" class="js-salemode-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-200/70 dark:bg-white/10 shrink-0">
+            Contenedores CIF Mariel
+          </button>
+          <button data-mode="WHOLESALE" onclick="setSaleModeFilter('WHOLESALE')" class="js-salemode-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-200/70 dark:bg-white/10 shrink-0">
+            Mayorista
+          </button>
+          <button data-mode="RETAIL" onclick="setSaleModeFilter('RETAIL')" class="js-salemode-pill px-3 py-1.5 rounded-lg text-xs font-semibold bg-stone-200/70 dark:bg-white/10 shrink-0">
+            Minorista
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between sm:justify-end gap-3 text-xs w-full sm:w-auto pt-1 sm:pt-0">
+          <span id="catalog-results-count" class="font-bold opacity-75">21 productos</span>
+          <button
+            id="catalog-filter-btn"
+            type="button"
+            onclick="toggleCatalogFilterPanel()"
+            aria-label="Filtrar productos"
+            aria-expanded="false"
+            title="Filtrar y ordenar productos"
+            class="relative w-9 h-9 rounded-xl bg-[#F7F5F0] dark:bg-[#171413] hover:bg-[#7C1D18] hover:text-white border border-stone-300 dark:border-white/15 flex items-center justify-center transition-all shadow-sm"
+          >
+            <i class="fa-solid fa-sliders text-sm"></i>
+            <span id="catalog-filter-badge" class="hidden absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#7C1D18] text-white text-[9px] font-extrabold items-center justify-center shadow">1</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel Desplegable de Filtros Avanzados (Se abre al pulsar el ícono de filtro) -->
+      <div id="catalog-filter-panel" class="hidden pt-3 mt-2 border-t border-stone-200/80 dark:border-white/10 space-y-3 text-xs animate-fadeIn">
+        <div class="flex items-center justify-between">
+          <span class="font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 text-[#7C1D18] dark:text-[#F2AE79]">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filtros del Catálogo</span>
+          </span>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="resetAllCatalogFilters()" class="px-2.5 py-1 rounded-lg bg-stone-200/80 dark:bg-white/10 hover:bg-stone-300 font-bold text-[11px] transition-colors">
+              Limpiar filtros
+            </button>
+            <button type="button" onclick="toggleCatalogFilterPanel(false)" class="w-7 h-7 rounded-lg bg-stone-200/80 dark:bg-white/10 flex items-center justify-center font-bold" aria-label="Cerrar filtros">✕</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <!-- Filtro 1: Ordenar Por -->
+          <div>
+            <label for="catalog-sort-select" class="font-bold text-[11px] opacity-75 block mb-1">Ordenar por:</label>
+            <select id="catalog-sort-select" onchange="handleSortChange(this.value)" aria-label="Ordenar por" class="w-full px-3 py-2 rounded-xl bg-[#F7F5F0] dark:bg-[#171413] border border-stone-300 dark:border-white/15 font-bold text-xs">
+              <option value="featured">Destacados</option>
+              <option value="price-asc">Menor a Mayor Precio</option>
+              <option value="price-desc">Mayor a Menor Precio</option>
+              <option value="flash">Solo Ofertas Destacadas</option>
+            </select>
+          </div>
+
+          <!-- Filtro 2: Departamento / Categoría -->
+          <div>
+            <label for="filter-panel-category-select" class="font-bold text-[11px] opacity-75 block mb-1">Categoría / Departamento:</label>
+            <select id="filter-panel-category-select" onchange="selectCategory(this.value)" aria-label="Filtrar por categoría" class="w-full px-3 py-2 rounded-xl bg-[#F7F5F0] dark:bg-[#171413] border border-stone-300 dark:border-white/15 font-bold text-xs"></select>
+          </div>
+
+          <!-- Filtro 3: Tienda / Proveedor -->
+          <div>
+            <label for="filter-panel-vendor-select" class="font-bold text-[11px] opacity-75 block mb-1">Tienda / Proveedor:</label>
+            <select id="filter-panel-vendor-select" onchange="setVendorFilterFromPanel(this.value)" aria-label="Filtrar por tienda" class="w-full px-3 py-2 rounded-xl bg-[#F7F5F0] dark:bg-[#171413] border border-stone-300 dark:border-white/15 font-bold text-xs"></select>
+          </div>
+
+          <!-- Filtro 4: Moneda de Visualización -->
+          <div>
+            <label for="filter-panel-currency-select" class="font-bold text-[11px] opacity-75 block mb-1">Moneda:</label>
+            <select id="filter-panel-currency-select" onchange="changeCurrency(this.value)" aria-label="Moneda" class="js-currency-select w-full px-3 py-2 rounded-xl bg-[#F7F5F0] dark:bg-[#171413] border border-stone-300 dark:border-white/15 font-bold text-xs">
+              <option value="USD">Moneda: USD (Dólares)</option>
+              <option value="EUR">Moneda: EUR (Euros)</option>
+              <option value="USDT">Moneda: USDT</option>
+              <option value="CUP">Moneda: CUP</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANTALLA DE TIENDAS OFICIALES (OCULTA POR DEFECTO; ABRE SOLO AL FILTRAR CATEGORÍA "TIENDAS") -->
+    <section id="stores-showcase-section" class="stores-section space-y-3 hidden">
+      <div class="flex items-center justify-between">
+        <h2 class="section-title font-display text-lg sm:text-xl font-bold flex items-center gap-2">
+          <i class="fa-solid fa-store text-[#7C1D18] dark:text-[#F2AE79] text-base"></i>
+          <span>Tiendas Oficiales</span>
+        </h2>
+        <button onclick="activeVendorFilter='v-wssnd-01'; renderStoresSection(); renderCatalog();" class="text-xs font-bold text-[#7C1D18] dark:text-[#F2AE79] hover:underline">
+          Ver los 17 Contenedores de WSSND SKYLINK →
+        </button>
+      </div>
+      <div id="vendors-showcase-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </section>
+
+    <!-- CATÁLOGO DE PRODUCTOS Y CONTENEDORES -->
+    <section id="catalog-section-anchor" class="catalog-section space-y-3">
+      <!-- Indicador limpio cuando se filtra una tienda específica -->
+      <div id="active-store-filter-indicator" class="hidden"></div>
+
+      <!-- Grilla de Productos -->
+      <div id="catalog-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+    </section>
+  </main>
+
+  <!-- MODAL DE MAPA INTERACTIVO GPS Y CALCULADORA DE DOMICILIO POR KILÓMETRO -->
+  <div id="delivery-map-modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-stone-200 dark:border-white/10 pb-3">
+        <h3 class="font-display text-lg font-bold">Mapa de Entrega y Tarifa por Kilómetro</h3>
+        <button onclick="closeDeliveryMapModal()" class="w-8 h-8 rounded-full bg-stone-200 dark:bg-white/10 flex items-center justify-center font-bold" aria-label="Cerrar">✕</button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-7 space-y-2">
+          <div id="cuba-leaflet-map" class="w-full h-[300px] sm:h-[340px] rounded-2xl border border-stone-300 dark:border-white/10 z-10"></div>
+          <div class="flex items-center justify-between text-[11px] opacity-80">
+            <span>Haz clic en tu ubicación o arrastra el marcador azul.</span>
+            <span id="map-user-coords-badge" class="font-mono font-bold">GPS: 23.1330, -82.3830</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-3">
+          <div class="space-y-2.5">
+            <label class="block text-xs font-bold">Dirección de Entrega:</label>
+            <input
+              id="map-user-address-input"
+              type="text"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 text-xs font-semibold"
+              placeholder="Calle, número, entrecalles, municipio..."
+            />
+            <div class="p-3 rounded-2xl bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-[11px]">
+                  <thead>
+                    <tr class="border-b border-stone-300 dark:border-white/10 opacity-70">
+                      <th class="pb-1">Tienda</th>
+                      <th class="pb-1 px-1">Base</th>
+                      <th class="pb-1 px-1">$/Km</th>
+                      <th class="pb-1 px-1">Dist.</th>
+                      <th class="pb-1 text-right">Envío</th>
+                    </tr>
+                  </thead>
+                  <tbody id="map-vendor-tariffs-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="saveCustomUserAddress()" class="w-full py-3 rounded-2xl bg-[#2A2522] hover:bg-[#7C1D18] dark:bg-[#F2AE79] dark:text-[#171413] text-white font-extrabold text-xs shadow-md transition-all">
+            Guardar Ubicación
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE INICIO DE SESIÓN DE ADMINISTRADOR / NEGOCIO -->
+  <div id="admin-login-modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display text-xl font-bold">Acceso Panel de Negocios</h3>
+        <button onclick="closeAdminModals()" class="w-8 h-8 rounded-full bg-stone-200 dark:bg-white/10 font-bold" aria-label="Cerrar">✕</button>
+      </div>
+      <form onsubmit="handleAdminLogin(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="font-bold block mb-1">Correo del Administrador:</label>
+          <input id="admin-email-input" type="email" value="admin@mercapros.com" required class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-semibold" />
+        </div>
+        <div>
+          <label class="font-bold block mb-1">Tienda / Perfil a Administrar:</label>
+          <select id="admin-role-login-select" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold">
+            <option value="v-wssnd-01">Exportador: WSSND SKYLINK (Contenedores CIF Mariel)</option>
+            <option value="v-mip-01">Mipyme: Alimentos Del Valle S.U.R.L. (Mayor y Menor)</option>
+            <option value="v-tcp-01">TCP: Mercadito La Víbora Express (Solo Minorista)</option>
+            <option value="v-mip-02">Mipyme: ElectroHabana Solar S.R.L. (Mayor y Menor)</option>
+          </select>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-2xl bg-[#2A2522] dark:bg-[#F2AE79] text-white dark:text-[#171413] font-extrabold text-xs shadow-md">
+          Entrar al Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DASHBOARD ADMINISTRADOR MÓVIL (5 PESTAÑAS) -->
+  <div id="admin-dashboard-modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-2 sm:p-5">
+    <div class="bg-[#F7F5F0] dark:bg-[#171413] border border-stone-300 dark:border-white/15 rounded-3xl max-w-5xl w-full max-h-[94vh] overflow-y-auto shadow-2xl p-4 sm:p-6 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-300 dark:border-white/10">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-2xl bg-[#7C1D18] text-white flex items-center justify-center">
+            <i class="fa-solid fa-sliders"></i>
+          </span>
+          <h3 class="font-display text-lg font-bold">Dashboard de Inventario y Configuración</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <select id="admin-active-vendor-select" onchange="switchAdminVendorProfile(this.value)" class="px-3 py-2 rounded-xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 text-xs font-bold">
+            <option value="v-wssnd-01">Exportador: WSSND SKYLINK</option>
+            <option value="v-mip-01">Mipyme: Alimentos Del Valle</option>
+            <option value="v-tcp-01">TCP: Mercadito La Víbora</option>
+            <option value="v-mip-02">Mipyme: ElectroHabana Solar</option>
+          </select>
+          <button onclick="closeAdminModals()" class="w-9 h-9 rounded-full bg-stone-200 dark:bg-white/10 font-bold" aria-label="Cerrar">✕</button>
+        </div>
+      </div>
+
+      <!-- Las 5 Pestañas -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <button data-tab="tab-catalog" onclick="switchAdminTab('tab-catalog')" class="js-admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-[#2A2522] text-[#F7F5F0] dark:bg-[#F2AE79] dark:text-[#171413] shadow-sm flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-boxes-stacked"></i> 1. Catálogo
+        </button>
+        <button data-tab="tab-promos" onclick="switchAdminTab('tab-promos')" class="js-admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-semibold bg-stone-200/70 dark:bg-white/10 flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-bullhorn"></i> 2. Promociones
+        </button>
+        <button data-tab="tab-categories" onclick="switchAdminTab('tab-categories')" class="js-admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-semibold bg-stone-200/70 dark:bg-white/10 flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-tags"></i> 3. Categorías
+        </button>
+        <button data-tab="tab-orders" onclick="switchAdminTab('tab-orders')" class="js-admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-semibold bg-stone-200/70 dark:bg-white/10 flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-receipt"></i> 4. Tickets / Pedidos
+        </button>
+        <button data-tab="tab-settings" onclick="switchAdminTab('tab-settings')" class="js-admin-tab-btn px-4 py-2.5 rounded-xl text-xs font-semibold bg-stone-200/70 dark:bg-white/10 flex items-center gap-2 shrink-0">
+          <i class="fa-solid fa-map-pin"></i> 5. Tarifa $/Km & Supabase
+        </button>
+      </div>
+
+      <!-- PESTAÑA 1: CATÁLOGO CRUD + MOTOR HTML5 CANVAS -->
+      <div id="tab-catalog" class="js-admin-tab-panel grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <form id="admin-product-form" onsubmit="saveProductFromAdmin(event)" class="lg:col-span-5 p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-200 dark:border-white/10 space-y-3 text-xs">
+          <div class="flex items-center justify-between">
+            <h4 class="font-display font-bold text-base">Agregar / Editar Producto</h4>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-extrabold text-[10px]">Anuncio Gratis (+10%)</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="col-span-2">
+              <label class="font-bold block mb-1">Nombre del Producto:</label>
+              <input id="prod-title-input" type="text" required placeholder="Ej: Harina de Trigo Saco 25 Kg" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">SKU:</label>
+              <input id="prod-sku-input" type="text" placeholder="WSSND-01" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Categoría:</label>
+              <select id="prod-category-input" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-semibold"></select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div class="p-2.5 rounded-xl bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10">
+              <label class="font-bold block">Precio Unitario (USD):</label>
+              <input id="prod-retail-input" type="number" step="0.01" required placeholder="0.76" class="w-full mt-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold" />
+              <input id="prod-unitretail-input" type="text" placeholder="Ej: Contenedor 25 TM" class="w-full mt-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 text-[11px]" />
+            </div>
+
+            <div id="admin-wholesale-field-group" class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-600/20">
+              <label class="font-bold block">Precio Mayorista (USD):</label>
+              <input id="prod-wholesale-input" type="number" step="0.01" placeholder="85.00" class="w-full mt-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold" />
+              <input id="prod-unitwholesale-input" type="text" placeholder="Ej: Caja Master" class="w-full mt-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 text-[11px]" />
+              <span id="prod-wholesale-Note" class="text-[10px] font-bold text-[#7C1D18] block mt-1"></span>
+            </div>
+          </div>
+
+          <div id="admin-container-field-group" class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-600/25">
+            <label class="font-bold block">Precio Contenedor CIF Mariel (USD):</label>
+            <input id="prod-container-input" type="number" step="0.01" placeholder="17250.00" class="w-full mt-1 px-2.5 py-1.5 rounded-lg bg-white dark:bg-black/30 border border-stone-300 font-bold" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="font-bold block mb-1">Mín. Mayorista:</label>
+              <input id="prod-minqty-input" type="number" value="1" class="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Stock Disponible:</label>
+              <input id="prod-stock-input" type="number" value="15" class="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+          </div>
+
+          <div>
+            <label class="font-bold block mb-1">Ficha Técnica (Origen, Naviera, Tiempos):</label>
+            <input id="prod-specs-input" type="text" placeholder="Origen: Turquía • Naviera: CMA-CGM • 25 TM" class="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+          </div>
+
+          <div>
+            <label class="font-bold block mb-1">Descripción:</label>
+            <textarea id="prod-desc-input" rows="2" placeholder="Detalles del producto..." class="w-full px-3 py-1.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15"></textarea>
+          </div>
+
+          <!-- Carga de Fotos con Compresión HTML5 Canvas -->
+          <div class="p-3 rounded-2xl bg-stone-100 dark:bg-white/5 border border-dashed border-stone-300 dark:border-white/20 space-y-2">
+            <label class="font-bold block text-xs">
+              <i class="fa-solid fa-camera-retro text-[#7C1D18] mr-1"></i>Subir Foto desde el Celular (Compresión Canvas):
+            </label>
+            <input type="file" accept="image/*" onchange="handleProductPhotoUpload(event)" class="w-full text-[11px]" />
+            <input id="prod-image-dataurl" type="hidden" value="assets/combo-proteina.jpg" />
+            <img id="prod-image-preview" src="" alt="Vista previa" class="hidden w-16 h-16 rounded-xl object-cover border" />
+          </div>
+
+          <label class="flex items-center gap-2 font-bold cursor-pointer">
+            <input id="prod-flash-checkbox" type="checkbox" class="rounded text-[#7C1D18]" />
+            <span>Destacar en Ofertas</span>
+          </label>
+
+          <div class="flex gap-2 pt-1">
+            <button type="submit" class="flex-1 py-2.5 rounded-xl bg-[#2A2522] dark:bg-[#F2AE79] text-white dark:text-[#171413] font-extrabold">
+              Guardar Producto
+            </button>
+            <button type="button" onclick="resetProductForm()" class="px-3 py-2.5 rounded-xl bg-stone-200 dark:bg-white/10 font-bold">
+              Limpiar
+            </button>
+          </div>
+        </form>
+
+        <div class="lg:col-span-7 space-y-2.5">
+          <h4 class="font-display font-bold text-base">Productos de la Tienda Seleccionada</h4>
+          <div id="admin-inventory-list" class="space-y-2 max-h-[520px] overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <!-- PESTAÑA 2: ANUNCIOS Y PROMOCIONES -->
+      <div id="tab-promos" class="js-admin-tab-panel hidden grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+        <form onsubmit="addAnnouncementFromAdmin(event)" class="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-200 dark:border-white/10 space-y-3">
+          <h4 class="font-display font-bold text-base">Nueva Promoción</h4>
+          <input id="ann-title-input" type="text" required placeholder="Título de la promoción" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+          <input id="ann-subtitle-input" type="text" required placeholder="Descripción" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+          <div class="grid grid-cols-2 gap-2">
+            <input id="ann-badge-input" type="text" placeholder="Etiqueta" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            <input id="ann-code-input" type="text" placeholder="Código" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#2A2522] dark:bg-[#F2AE79] text-white dark:text-black font-extrabold">
+            Guardar Promoción
+          </button>
+        </form>
+        <div id="admin-announcements-list" class="space-y-2"></div>
+      </div>
+
+      <!-- PESTAÑA 3: CATEGORÍAS -->
+      <div id="tab-categories" class="js-admin-tab-panel hidden grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+        <form onsubmit="addCategoryFromAdmin(event)" class="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-200 dark:border-white/10 space-y-3">
+          <h4 class="font-display font-bold text-base">Agregar Categoría</h4>
+          <input id="cat-name-input" type="text" required placeholder="Nombre de la Categoría" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+          <input id="cat-icon-input" type="text" value="fa-box" placeholder="Ícono FontAwesome" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#2A2522] dark:bg-[#F2AE79] text-white dark:text-black font-extrabold">
+            Crear Categoría
+          </button>
+        </form>
+        <div id="admin-categories-list" class="space-y-2"></div>
+      </div>
+
+      <!-- PESTAÑA 4: HISTORIAL DE TICKETS Y PEDIDOS -->
+      <div id="tab-orders" class="js-admin-tab-panel hidden space-y-3">
+        <h4 class="font-display font-bold text-base">Historial de Tickets Enviados</h4>
+        <div id="admin-orders-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      </div>
+
+      <!-- PESTAÑA 5: TARIFA POR KM, SUPABASE Y BACKUP JSON -->
+      <div id="tab-settings" class="js-admin-tab-panel hidden grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+        <form onsubmit="saveVendorLogisticsConfig(event)" class="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-200 dark:border-white/10 space-y-3">
+          <h4 class="font-display font-bold text-base">Configurar Precio por Km (Mipyme / TCP)</h4>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="font-bold block mb-1">Tarifa Base (USD):</label>
+              <input id="vendor-cfg-basefee" type="number" step="0.05" required class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Precio $/Km (USD):</label>
+              <input id="vendor-cfg-kmprice" type="number" step="0.05" required class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold" />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="font-bold block mb-1">Latitud GPS:</label>
+              <input id="vendor-cfg-lat" type="number" step="0.0001" required class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-mono" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Longitud GPS:</label>
+              <input id="vendor-cfg-lng" type="number" step="0.0001" required class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-mono" />
+            </div>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#7C1D18] text-white font-extrabold">
+            Guardar Tarifa por Km
+          </button>
+        </form>
+
+        <div class="p-4 rounded-2xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-200 dark:border-white/10 space-y-4">
+          <form onsubmit="saveSupabaseCredentials(event)" class="space-y-2.5">
+            <h4 class="font-display font-bold text-base">Conexión Supabase & Respaldo JSON</h4>
+            <input id="supabase-url-input" type="url" placeholder="https://tu-proyecto.supabase.co" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            <input id="supabase-key-input" type="password" placeholder="Supabase Anon Key" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            <button type="submit" class="w-full py-2 rounded-xl bg-[#2A2522] dark:bg-[#F2AE79] text-white dark:text-black font-bold">
+              Conectar Supabase
+            </button>
+          </form>
+
+          <div class="pt-3 border-t border-stone-200 dark:border-white/10 flex gap-2">
+            <button type="button" onclick="exportBackupJson()" class="flex-1 py-2 px-3 rounded-xl bg-emerald-700 text-white font-bold">
+              Descargar JSON
+            </button>
+            <label class="flex-1 py-2 px-3 rounded-xl bg-stone-200 dark:bg-white/10 font-bold text-center cursor-pointer">
+              Restaurar JSON
+              <input type="file" accept=".json" onchange="importBackupJson(event)" class="hidden" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANTALLA INDEPENDIENTE DE DETALLE DEL PRODUCTO (AL HACER CLIC EN UN PRODUCTO) -->
+  <div id="product-detail-modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl p-5 sm:p-7">
+      <div class="flex items-center justify-between border-b border-stone-200 dark:border-white/10 pb-3 mb-5">
+        <div class="flex items-center gap-2">
+          <span id="detail-modal-sku" class="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-white/10 font-mono text-[11px] font-bold text-[#7C1D18] dark:text-[#F2AE79]">SKU</span>
+          <span id="detail-modal-category" class="text-xs font-semibold opacity-70">Categoría</span>
+        </div>
+        <button onclick="closeProductDetailModal()" class="w-9 h-9 rounded-full bg-stone-200 dark:bg-white/10 flex items-center justify-center font-bold" aria-label="Cerrar">✕</button>
+      </div>
+
+      <div id="product-detail-body"></div>
+    </div>
+  </div>
+
+  <!-- SISTEMA DE AUTENTICACIÓN Y CREACIÓN DE USUARIOS (4 NIVELES: PROVEEDOR, MIPYME, TCP Y CLIENTE DOMICILIO) -->
+  <div id="user-auth-modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+    <div class="bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 rounded-3xl max-w-3xl w-full max-h-[93vh] overflow-y-auto shadow-2xl p-5 sm:p-7 space-y-5">
+      <div class="flex items-center justify-between border-b border-stone-200 dark:border-white/10 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-2xl bg-[#7C1D18] text-white flex items-center justify-center">
+            <i class="fa-solid fa-user-shield"></i>
+          </span>
+          <div>
+            <h3 class="font-display text-lg sm:text-xl font-bold leading-tight">Cuenta y Registro Mercapros Cuba</h3>
+            <p class="text-[11px] opacity-75">Proveedores Internacionales, Mipymes, TCP y Clientes a Domicilio</p>
+          </div>
+        </div>
+        <button onclick="closeUserAuthModal()" class="w-9 h-9 rounded-full bg-stone-200 dark:bg-white/10 flex items-center justify-center font-bold" aria-label="Cerrar">✕</button>
+      </div>
+
+      <!-- RESUMEN DE SESIÓN ACTIVA (CUANDO EL USUARIO YA INICIÓ SESIÓN) -->
+      <div id="auth-active-session-box" class="hidden p-4 rounded-2xl bg-stone-100 dark:bg-white/5 border border-[#7C1D18]/40 space-y-3 text-xs"></div>
+
+      <!-- SELECTOR DE PESTAÑAS: INICIAR SESIÓN / CREAR CUENTA -->
+      <div id="auth-tabs-bar" class="flex items-center gap-2 border-b border-stone-200 dark:border-white/10 pb-3">
+        <button id="auth-tab-login-btn" onclick="switchUserAuthTab('login')" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-extrabold bg-[#2A2522] text-white dark:bg-[#F2AE79] dark:text-[#171413]">
+          <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Iniciar Sesión
+        </button>
+        <button id="auth-tab-register-btn" onclick="switchUserAuthTab('register')" class="flex-1 py-2.5 px-4 rounded-xl text-xs font-bold bg-stone-200/80 dark:bg-white/10">
+          <i class="fa-solid fa-user-plus mr-1.5"></i>Crear Cuenta Nueva
+        </button>
+      </div>
+
+      <!-- PESTAÑA 1: INICIAR SESIÓN -->
+      <div id="auth-panel-login" class="space-y-4 text-xs">
+        <form onsubmit="handleUserLoginSubmit(event)" class="space-y-3">
+          <div>
+            <label class="font-bold block mb-1">Correo Electrónico:</label>
+            <input id="login-email-input" type="email" required placeholder="tu-correo@empresa.cu" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-semibold" />
+          </div>
+          <div>
+            <label class="font-bold block mb-1">Contraseña:</label>
+            <input id="login-password-input" type="password" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-semibold" />
+          </div>
+          <button type="submit" class="w-full py-3 rounded-2xl bg-[#7C1D18] hover:bg-[#5D1713] text-white font-extrabold text-xs shadow-md transition-all">
+            Entrar a mi Cuenta
+          </button>
+        </form>
+
+        <!-- Acceso Rápido de Demostración para los 4 Niveles -->
+        <div class="pt-3 border-t border-stone-200 dark:border-white/10 space-y-2">
+          <span class="text-[11px] font-bold opacity-75 block">Cuentas verificadas de prueba rápida (1 clic):</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button type="button" onclick="quickDemoLogin('exportador@wssnd.com')" class="p-2.5 rounded-xl bg-stone-100 dark:bg-white/5 hover:border-[#7C1D18] border border-stone-200 dark:border-white/10 text-left">
+              <span class="font-extrabold text-[#7C1D18] dark:text-[#F2AE79] block">1. Proveedor Extranjero</span>
+              <span class="text-[11px] opacity-75">WSSND SKYLINK (Contenedores CIF)</span>
+            </button>
+            <button type="button" onclick="quickDemoLogin('mipyme@delvalle.cu')" class="p-2.5 rounded-xl bg-stone-100 dark:bg-white/5 hover:border-[#7C1D18] border border-stone-200 dark:border-white/10 text-left">
+              <span class="font-extrabold text-[#7C1D18] dark:text-[#F2AE79] block">2. Mipyme Cubana</span>
+              <span class="text-[11px] opacity-75">Alimentos Del Valle S.U.R.L.</span>
+            </button>
+            <button type="button" onclick="quickDemoLogin('tcp@lavibora.cu')" class="p-2.5 rounded-xl bg-stone-100 dark:bg-white/5 hover:border-[#7C1D18] border border-stone-200 dark:border-white/10 text-left">
+              <span class="font-extrabold text-[#7C1D18] dark:text-[#F2AE79] block">3. TCP Cuenta Propia</span>
+              <span class="text-[11px] opacity-75">Mercadito La Víbora (Vende Minorista)</span>
+            </button>
+            <button type="button" onclick="quickDemoLogin('cliente@hogar.cu')" class="p-2.5 rounded-xl bg-stone-100 dark:bg-white/5 hover:border-[#7C1D18] border border-stone-200 dark:border-white/10 text-left">
+              <span class="font-extrabold text-[#7C1D18] dark:text-[#F2AE79] block">4. Cliente a Domicilio</span>
+              <span class="text-[11px] opacity-75">Elena Rodríguez (Compra Hogar)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PESTAÑA 2: CREAR CUENTA (FORMULARIO DINÁMICO SEGÚN NIVEL DE USUARIO) -->
+      <div id="auth-panel-register" class="hidden space-y-4 text-xs">
+        <div>
+          <label class="font-bold block mb-2">1. Selecciona el Tipo de Cuenta a Crear:</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button type="button" data-reg-role="CLIENTE_B2C" onclick="selectRegisterRole('CLIENTE_B2C')" class="js-reg-role-card p-3 rounded-2xl border text-left transition-all">
+              <i class="fa-solid fa-house-user text-base text-[#7C1D18] dark:text-[#F2AE79] mb-1 block"></i>
+              <span class="font-extrabold block text-xs">Cliente Hogar</span>
+              <span class="text-[10px] opacity-75 block">Compras a domicilio</span>
+            </button>
+            <button type="button" data-reg-role="TCP" onclick="selectRegisterRole('TCP')" class="js-reg-role-card p-3 rounded-2xl border text-left transition-all">
+              <i class="fa-solid fa-store text-base text-[#7C1D18] dark:text-[#F2AE79] mb-1 block"></i>
+              <span class="font-extrabold block text-xs">TCP</span>
+              <span class="text-[10px] opacity-75 block">Vende solo minorista</span>
+            </button>
+            <button type="button" data-reg-role="MIPYME" onclick="selectRegisterRole('MIPYME')" class="js-reg-role-card p-3 rounded-2xl border text-left transition-all">
+              <i class="fa-solid fa-building-wheat text-base text-[#7C1D18] dark:text-[#F2AE79] mb-1 block"></i>
+              <span class="font-extrabold block text-xs">Mipyme</span>
+              <span class="text-[10px] opacity-75 block">Mayorista y minorista</span>
+            </button>
+            <button type="button" data-reg-role="EXPORTADOR_B2B" onclick="selectRegisterRole('EXPORTADOR_B2B')" class="js-reg-role-card p-3 rounded-2xl border text-left transition-all">
+              <i class="fa-solid fa-ship text-base text-[#7C1D18] dark:text-[#F2AE79] mb-1 block"></i>
+              <span class="font-extrabold block text-xs">Proveedor B2B</span>
+              <span class="text-[10px] opacity-75 block">Exporta contenedores</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Banda Informativa de Permisos del Nivel Seleccionado -->
+        <div id="reg-role-permissions-banner" class="p-3 rounded-2xl bg-stone-100 dark:bg-white/5 border border-stone-200 dark:border-white/10 text-[11px] font-semibold"></div>
+
+        <form id="user-register-form" onsubmit="handleUserRegisterSubmit(event)" class="space-y-3">
+          <input id="reg-selected-role" type="hidden" value="CLIENTE_B2C" />
+
+          <!-- Datos Comunes de Identidad y Acceso -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label id="reg-fullname-label" class="font-bold block mb-1">Nombre y Apellidos del Titular / Destinatario:</label>
+              <input id="reg-fullname" type="text" required placeholder="Ej: Juan Pérez Rodríguez" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Teléfono / WhatsApp de Contacto:</label>
+              <input id="reg-phone" type="tel" required placeholder="Ej: +53 5xxxxxxx" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Correo Electrónico:</label>
+              <input id="reg-email" type="email" required placeholder="correo@ejemplo.com" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+            <div>
+              <label class="font-bold block mb-1">Contraseña de Acceso:</label>
+              <input id="reg-password" type="password" required placeholder="Mínimo 4 caracteres" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+            </div>
+          </div>
+
+          <!-- BLOQUE A: DATOS ESPECÍFICOS DE PROVEEDOR / EXPORTADOR EXTRANJERO -->
+          <div id="reg-fields-exportador" class="hidden p-3.5 rounded-2xl bg-stone-100/80 dark:bg-white/5 border border-stone-200 dark:border-white/10 space-y-3">
+            <h4 class="font-display font-bold text-sm text-[#7C1D18] dark:text-[#F2AE79]">Datos de Empresa Exportadora Internacional (Contenedores)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="font-bold block mb-1">Razón Social / Empresa Exportadora:</label>
+                <input id="reg-exp-company" type="text" placeholder="Ej: WSSND SKYLINK LTD" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">País de Origen:</label>
+                <input id="reg-exp-country" type="text" placeholder="Ej: España, Turquía, Brasil, Panamá..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Registro Mercantil / Tax ID / NIF:</label>
+                <input id="reg-exp-taxid" type="text" placeholder="Número de Registro Internacional" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Navieras y Puerto Destino en Cuba:</label>
+                <input id="reg-exp-shipping" type="text" placeholder="Ej: CMA-CGM / CIF Puerto del Mariel" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOQUE B: DATOS ESPECÍFICOS DE MIPYME CUBANA -->
+          <div id="reg-fields-mipyme" class="hidden p-3.5 rounded-2xl bg-stone-100/80 dark:bg-white/5 border border-stone-200 dark:border-white/10 space-y-3">
+            <h4 class="font-display font-bold text-sm text-[#7C1D18] dark:text-[#F2AE79]">Datos Oficiales de la Mipyme (Compra Contenedor/Mayorista • Vende Mayor y Menor)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="sm:col-span-2">
+                <label class="font-bold block mb-1">Denominación Social Oficial (S.U.R.L. / S.R.L.):</label>
+                <input id="reg-mip-company" type="text" placeholder="Ej: Distribuidora Caribeña S.U.R.L." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Código NIT (ONAT):</label>
+                <input id="reg-mip-nit" type="text" placeholder="11 dígitos NIT" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Código REEUP / Registro Mercantil:</label>
+                <input id="reg-mip-reeup" type="text" placeholder="Ej: MIP-2025-0412" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOQUE C: DATOS ESPECÍFICOS DE TCP (TRABAJADOR POR CUENTA PROPIA) -->
+          <div id="reg-fields-tcp" class="hidden p-3.5 rounded-2xl bg-stone-100/80 dark:bg-white/5 border border-stone-200 dark:border-white/10 space-y-3">
+            <h4 class="font-display font-bold text-sm text-[#7C1D18] dark:text-[#F2AE79]">Datos Oficiales del TCP (Compra Mayor/Menor • Vende Solo Minorista)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="font-bold block mb-1">Nombre Comercial del Proyecto / Negocio:</label>
+                <input id="reg-tcp-business" type="text" placeholder="Ej: Mercadito El Rápido" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Carnet de Identidad (CI) / NIT:</label>
+                <input id="reg-tcp-ci" type="text" placeholder="11 dígitos CI / NIT ONAT" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="font-bold block mb-1">Actividad Autorizada / Licencia TCP:</label>
+                <input id="reg-tcp-activity" type="text" placeholder="Ej: Comercialización minorista de alimentos y productos del agro" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOQUE D: UBICACIÓN EN CUBA (COMÚN PARA MIPYME, TCP Y CLIENTE A DOMICILIO) -->
+          <div id="reg-fields-cuba-location" class="p-3.5 rounded-2xl bg-stone-100/80 dark:bg-white/5 border border-stone-200 dark:border-white/10 space-y-3">
+            <h4 id="reg-location-heading" class="font-display font-bold text-sm text-[#7C1D18] dark:text-[#F2AE79]">Dirección Exacta para Entrega a Domicilio en Cuba</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="font-bold block mb-1">Provincia:</label>
+                <select id="reg-province" onchange="onRegProvinceChange(this.value)" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold"></select>
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Municipio:</label>
+                <select id="reg-municipality" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold"></select>
+              </div>
+              <div class="sm:col-span-2">
+                <label id="reg-address-label" class="font-bold block mb-1">Dirección Exacta (Calle, #, Apto, Entrecalles, Reparto):</label>
+                <input id="reg-address" type="text" placeholder="Ej: Calle 23 #410 apto 2 entre J y K, El Vedado" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+            </div>
+
+            <!-- Campos extra solo para Cliente B2C (CI receptor y Punto de Referencia) -->
+            <div id="reg-b2c-extra" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div>
+                <label class="font-bold block mb-1">Carnet de Identidad (CI) en Cuba:</label>
+                <input id="reg-b2c-ci" type="text" placeholder="11 dígitos de quien recibe" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Punto de Referencia de la Vivienda:</label>
+                <input id="reg-b2c-ref" type="text" placeholder="Ej: Frente al parque, bajos reja blanca" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+              </div>
+            </div>
+
+            <!-- Campos extra de Tarifa por Km (solo para Mipyme y TCP) -->
+            <div id="reg-business-delivery-cfg" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-stone-200 dark:border-white/10">
+              <div>
+                <label class="font-bold block mb-1">Tarifa Base de Domicilio (USD):</label>
+                <input id="reg-biz-basefee" type="number" step="0.10" value="1.50" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold" />
+              </div>
+              <div>
+                <label class="font-bold block mb-1">Precio por Kilómetro $/Km (USD):</label>
+                <input id="reg-biz-kmprice" type="number" step="0.05" value="0.45" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-bold" />
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3.5 rounded-2xl bg-[#2A2522] hover:bg-[#7C1D18] dark:bg-[#F2AE79] dark:text-[#171413] text-white font-extrabold text-xs shadow-lg transition-all">
+            <i class="fa-solid fa-user-check mr-1.5"></i>Crear Cuenta y Activar Perfil
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAWER DEL CARRITO (GENERACIÓN Y ENVÍO DE TICKET DE COMPRA AL WHATSAPP) -->
+  <div id="cart-drawer-modal" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end">
+    <div class="bg-[#FFFFFF] dark:bg-[#211D1B] w-full max-w-md h-full p-5 flex flex-col justify-between shadow-2xl border-l border-stone-200 dark:border-white/10 overflow-y-auto">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-stone-200 dark:border-white/10">
+          <div>
+            <h3 class="font-display text-lg font-bold">Ticket de Pedido</h3>
+            <p class="text-[11px] opacity-75">Revisa tu selección para enviar el ticket de compra</p>
+          </div>
+          <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-stone-200 dark:bg-white/10 font-bold" aria-label="Cerrar">✕</button>
+        </div>
+
+        <div id="cart-items-list" class="space-y-2.5 max-h-[45vh] overflow-y-auto pr-1"></div>
+        <div id="cart-totals-summary"></div>
+      </div>
+
+      <div class="space-y-2.5 pt-4 border-t border-stone-200 dark:border-white/10 text-xs">
+        <input id="checkout-customer-name" type="text" placeholder="Nombre del Comprador o Empresa (Mipyme / TCP)" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15 font-semibold" />
+        <input id="checkout-customer-notes" type="text" placeholder="Notas del pedido (Puerto, teléfono o referencia)" class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-black/30 border border-stone-300 dark:border-white/15" />
+        <button onclick="submitCheckoutOrder()" class="w-full py-3.5 rounded-2xl bg-[#2A2522] hover:bg-[#7C1D18] dark:bg-[#F2AE79] dark:text-[#171413] text-white font-extrabold text-xs shadow-lg transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Enviar Ticket de Pedido</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENÚ LATERAL COMPLETO (TODOS LOS CONTROLES RÁPIDOS Y NAVEGACIÓN) -->
+  <div id="mobile-drawer" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex">
+    <div class="bg-[#FFFFFF] dark:bg-[#211D1B] w-80 max-w-[85vw] h-full p-5 flex flex-col justify-between shadow-2xl overflow-y-auto">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-stone-200 dark:border-white/10">
+          <div class="flex items-center gap-2">
+            <img src="assets/mercapros-logo.webp" alt="Mercapros Logo" class="w-8 h-8 rounded-full object-cover border border-stone-300 dark:border-white/15" />
+            <span class="font-display font-extrabold text-lg">MERCAPROS</span>
+          </div>
+          <button onclick="document.getElementById('mobile-drawer').classList.add('hidden')" class="w-8 h-8 rounded-full bg-stone-200 dark:bg-white/10 font-bold" aria-label="Cerrar">✕</button>
+        </div>
+
+        <!-- Panel de Preferencias Rápidas: Con/Sin Fotos, Moneda y Tema -->
+        <div class="p-3 rounded-2xl bg-stone-100/90 dark:bg-white/5 border border-stone-200 dark:border-white/10 space-y-2.5">
+          <span class="text-[10px] font-extrabold uppercase tracking-wider opacity-60 block">Preferencias de Vista</span>
+          <button onclick="toggleLowDataMode(); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full py-2.5 px-3 rounded-xl bg-[#2A2522] text-white dark:bg-[#F2AE79] dark:text-[#171413] font-bold text-xs flex items-center justify-center gap-2">
+            <span class="js-lowdata-toggle-label"><i class="fa-regular fa-image mr-1.5"></i>Con Fotos</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-2">
+            <select onchange="changeCurrency(this.value)" aria-label="Moneda" class="js-currency-select w-full px-3 py-2 rounded-xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 text-xs font-extrabold cursor-pointer text-center">
+              <option value="USD">Moneda: USD</option>
+              <option value="EUR">Moneda: EUR</option>
+              <option value="USDT">Moneda: USDT</option>
+              <option value="CUP">Moneda: CUP</option>
+            </select>
+
+            <button onclick="toggleThemeMode()" aria-label="Cambiar Tema" class="w-full px-3 py-2 rounded-xl bg-[#FFFFFF] dark:bg-[#211D1B] border border-stone-300 dark:border-white/15 text-xs font-bold flex items-center justify-center gap-1.5 hover:border-[#7C1D18]">
+              <i class="fa-solid fa-circle-half-stroke text-[#7C1D18] dark:text-[#F2AE79]"></i>
+              <span>Tema</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cuenta de Usuario y Panel de Negocios -->
+        <div class="space-y-1.5 text-xs font-bold">
+          <button id="header-user-auth-btn" onclick="openUserAuthModal(); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full text-left px-3.5 py-2.5 rounded-xl bg-[#7C1D18]/10 hover:bg-[#7C1D18] text-[#7C1D18] dark:text-[#F2AE79] hover:text-white flex items-center gap-2.5 transition-all">
+            <i class="fa-solid fa-user-check w-5 text-center"></i>
+            <span id="header-user-auth-label">Acceder / Registro (4 Niveles)</span>
+          </button>
+
+          <button id="header-admin-gold-pill" onclick="openAdminModal(); document.getElementById('mobile-drawer').classList.add('hidden');" class="hidden w-full text-left px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#7C1D18] to-[#F2AE79] text-white font-extrabold flex items-center gap-2.5 shadow-sm">
+            <i class="fa-solid fa-crown w-5 text-center"></i>
+            <span>Mi Dashboard Activo</span>
+          </button>
+
+          <button onclick="openAdminModal(); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-stone-200/60 dark:hover:bg-white/10 flex items-center gap-2.5">
+            <i class="fa-solid fa-sliders text-[#7C1D18] dark:text-[#F2AE79] w-5 text-center"></i>
+            <span>Panel de Negocios</span>
+          </button>
+
+          <div class="my-2 border-t border-stone-200 dark:border-white/10"></div>
+
+          <button onclick="activeVendorFilter='ALL'; selectCategory('all'); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-stone-200/60 dark:hover:bg-white/10 flex items-center gap-2.5">
+            <i class="fa-solid fa-layer-group text-[#7C1D18] dark:text-[#F2AE79] w-5 text-center"></i>
+            <span>Todo el Catálogo</span>
+          </button>
+          <button onclick="selectCategory('tiendas'); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-stone-200/60 dark:hover:bg-white/10 flex items-center gap-2.5">
+            <i class="fa-solid fa-store text-[#7C1D18] dark:text-[#F2AE79] w-5 text-center"></i>
+            <span>Tiendas Oficiales</span>
+          </button>
+          <button onclick="selectCategory('contenedores-b2b'); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-stone-200/60 dark:hover:bg-white/10 flex items-center gap-2.5">
+            <i class="fa-solid fa-ship text-emerald-700 w-5 text-center"></i>
+            <span>Contenedores CIF Mariel</span>
+          </button>
+          <button onclick="openDeliveryMapModal(); document.getElementById('mobile-drawer').classList.add('hidden');" class="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-stone-200/60 dark:hover:bg-white/10 flex items-center gap-2.5">
+            <i class="fa-solid fa-map-location-dot text-[#7C1D18] dark:text-[#F2AE79] w-5 text-center"></i>
+            <span>Mapa de Domicilio $/Km</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-stone-200 dark:border-white/10">
+        <span class="text-xs font-semibold opacity-75">WhatsApp Directo:</span>
+        <!-- Botón WhatsApp SOLO ÍCONO -->
+        <a href="https://wa.me/971508379080" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow">
+          <i class="fa-brands fa-whatsapp text-xl"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP (REGLA ESTRICTA: SOLO ÍCONO) -->
+  <a
+    href="https://wa.me/971508379080"
+    target="_blank"
+    rel="noopener"
+    aria-label="WhatsApp"
+    class="floating-whatsapp fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center shadow-2xl hover:scale-105 transition-transform"
+  >
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+  </a>
+
+  <!-- TOAST DE NOTIFICACIONES -->
+  <div id="mercapros-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-[#2A2522] text-[#F7F5F0] dark:bg-[#F2AE79] dark:text-[#171413] text-xs font-bold shadow-xl flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-900"></i>
+    <span id="mercapros-toast-text"></span>
+  </div>
+
+  <!-- FOOTER COMPACTO CON FIRMA OBLIGATORIA -->
+  <footer class="site-footer mt-12 bg-[#2A2522] text-[#F7F5F0] dark:bg-[#060B09] border-t border-white/10 py-6 px-4">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-2.5">
+        <img src="assets/mercapros-logo.webp" alt="Mercapros Logo" class="w-8 h-8 rounded-full object-cover border border-white/20" />
+        <span class="font-display font-bold">MERCAPROS CUBA</span>
+        <span class="opacity-60">• Tu Día de Compras (B2B & B2C)</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://wa.me/971508379080" target="_blank" rel="noopener" aria-label="WhatsApp" class="w-8 h-8 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center">
+          <i class="fa-brands fa-whatsapp text-base"></i>
+        </a>
+        <span class="font-semibold tracking-wide text-[#F2AE79]">Developed by Tecnoemprende</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js?v=3.5"></script>
+  <script src="app.js?v=3.5"></script>
+  <script src="ui.js?v=3.5"></script>
+</body>
+</html>
